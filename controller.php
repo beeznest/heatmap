@@ -93,8 +93,10 @@ function _checkIdUrl($linkConnection, $url) {
         $course = $matches[1];
         if (strpos($url,'kids')) {
             $url = str_replace('COURSE'.$course, 'COURSE002', $url);
+            $url = str_replace('index.php','',$url);
         } else {
             $url = str_replace('COURSE'.$course, 'COURSE4', $url);
+            $url = str_replace('index.php','',$url);
         }
     }
     $query = "SELECT  id FROM page WHERE url = '$url' LIMIT 1";
