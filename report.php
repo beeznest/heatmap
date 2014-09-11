@@ -109,7 +109,7 @@ if (!empty($_GET['sc'])) {
             }
         }
     }
-    mysqli_close($link);
+    //mysqli_close($link);
     // paginador end
 
     $array = formatData($dataResult);    
@@ -200,6 +200,7 @@ body, html, h2 { margin:0; padding:0; height:100%;}
         echo '</ul>';
     }
 }
+mysqli_close($link);
 
 /**
  * List all pages
@@ -216,7 +217,7 @@ function getPages($link)
             $data[] = $row;
         }
     }
-    mysqli_close($link);
+    //mysqli_close($link);
 
     return $data;    
 }
