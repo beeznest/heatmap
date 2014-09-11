@@ -129,7 +129,7 @@ body, html, h2 { margin:0; padding:0; height:100%;}
 .heatmap {width: 100%;height: 100%;}
   </style>
 </head>
-<body>
+<body style="background-image: url('image/resolution/<?php echo $id_page ?>/<?php echo $xScreen ?>.png'); background-repeat: no-repeat;">
   <div class="wrapper">
     <div class="demo-wrapper">
       <div class="heatmap">        
@@ -139,7 +139,6 @@ body, html, h2 { margin:0; padding:0; height:100%;}
   <script src="js/heatmap.min.js"></script>  
   <script>    
     window.onload = function() {
-        document.body.style.backgroundImage="url('image/resolution/<?php echo $id_page ?>/<?php echo $xScreen ?>.png')";
         // data
         <?php $string = '';
         foreach ($point as $key => $arreglo) {
