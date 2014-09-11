@@ -1,11 +1,14 @@
 <?php
 require_once 'config.php';
 
-// data base screem
-$sc[0]['screem'] = '1366x768';
-$sc[1]['screem'] = '1280x800';
-$sc[2]['screem'] = '1024x768';
-$sc[3]['screem'] = '1600x900';
+//conection:
+$link = mysqli_connect($servidor, $user, $pass, $database) or die("Error " . mysqli_error($link));
+
+// data base screen
+$sc[0]['screen'] = '1366x768';
+$sc[1]['screen'] = '1280x800';
+$sc[2]['screen'] = '1024x768';
+$sc[3]['screen'] = '1600x900';
 
 // function helper
 /**
@@ -46,8 +49,6 @@ function formarDataXY($data) {
 ?>
 <?php  if (!empty($_GET['sc'])) : ?>
 <?php 
-    //conection:
-    $link = mysqli_connect($servidor, $user, $pass, $database) or die("Error " . mysqli_error($link));
 
     // insert
     $screen = $_GET['sc'];
@@ -56,14 +57,14 @@ function formarDataXY($data) {
 
     // paginador
     $offset = 0;
-    $limit = 250;    
-    $count = mysqli_fetch_row(mysqli_query($link, "SELECT  count(*) FROM heatmap WHERE screen = '$screen' AND id_page = '$id_page' "));
+    $limit = 250;
+    $count = mysqli_fetch_row(mysqli_query($link, "SELECT  count(*) FROM heatmap WHERE screen = '$screen' AND page_id = '$id_page' "));
     $total_pages = ($count[0] > 0) ? ceil($count[0]/$limit) : 1;
 
     for ($page = 1; $page <= $total_pages; $page++) {
         $offset = ($limit * $page) - $limit;
         $queryLimit = "LIMIT $offset,$limit ";
-        $query = "SELECT  data_serial FROM heatmap WHERE screen = '$screen' AND id_page = '$id_page' " . $queryLimit;
+        $query = "SELECT  data_serial FROM heatmap WHERE screen = '$screen' AND page_id = '$id_page' " . $queryLimit;
         $result = mysqli_query($link, $query,MYSQLI_USE_RESULT);    
         if ($result) {        
             while($row = $result->fetch_assoc()) {  
@@ -102,7 +103,7 @@ body, html, h2 { margin:0; padding:0; height:100%;}
   <script src="js/heatmap.min.js"></script>  
   <script>    
     window.onload = function() {
-        document.body.style.backgroundImage="url('image/resolution/<?php echo $screen ?>.png')";
+        document.body.style.backgroundImage="url('image/resolution/<?php echo $id_page ?>/<?php echo $screen ?>.png')";
         // data
         <?php $string = '';
         foreach ($point as $key => $arreglo) {
@@ -131,10 +132,34 @@ body, html, h2 { margin:0; padding:0; height:100%;}
 </html>
 <!-- html -->
 <?php else : ?>
-    <h2>Available resolutions 'HeadMap'</h2>
-    <ul>
-    <?php for ($i = 0; $i < count($sc); $i++) : ?> 
-        <li><a href="?id_page=1&sc=<?php echo $sc[$i]['screem'] ?>"><?php echo $sc[$i]['screem'] ?></a></li>
-    <?php endfor;?>
-    </ul>
+    <h1>Available resolutions 'HeadMap'</h1>
+    <?php $pages = getPages($link); ?> 
+    <?php foreach($pages as  $key => $value) : ?>
+        <h3><?php echo $pages[$key]['url'] ?></h3>
+        <?php $id_page = $pages[$key]['id']; ?>
+
+        <ul>
+        <?php for ($i = 0; $i < count($sc); $i++) : ?> 
+            <li><a href="?id_page=<?php echo $id_page ?>&sc=<?php echo $sc[$i]['screen'] ?>"><?php echo $sc[$i]['screen'] ?></a></li>
+        <?php endfor;?>
+        </ul>
+    <?php endforeach; ?>
 <?php endif; ?>
+<?php
+/**
+* List all pages
+*/
+function getPages($link)
+{
+    $query = 'SELECT  id, url FROM page ';
+    $data = array();
+    $result = mysqli_query($link, $query);
+    if (mysqli_num_rows($result) > 0 ) {
+        while($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+    }
+    mysqli_close($link);
+
+    return $data;    
+}
