@@ -19,7 +19,7 @@ function saveAction($request)
     $param = $request;
     $idUrl = mysqli_real_escape_string($link, $param['idUrl']);
     
-    $dataPost = isset($param['data']) ? mysqli_real_escape_string($link, $param['data']) : false;
+    $dataPost = isset($param['data']) ? $param['data'] : false;
     $idPage = _checkIdUrl($link, $idUrl);
 
     if ($idPage > 0 && is_array($dataPost) && count($dataPost) > 0) {
