@@ -67,7 +67,7 @@ function cuniq() {
 // ================================================================================
 var dataXY = new Array();
 var idBrowser = cuniq();
-var idUrl = window.location.href;
+var idUrl = window.location.href.split('\?')[0];
 var debug = true;
 if (debug) {
     console.log("Captured URL = " + idUrl);
