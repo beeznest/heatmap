@@ -194,8 +194,7 @@ body, html, h2 { margin:0; padding:0; height:100%;}
                     "SELECT count(*) FROM heatmap WHERE (screen = '".$sc[$i]['screen']."' $alternative ) AND page_id = '$id_page' "
                 )
             );
-            $total_pages = ($count[0] > 0) ? ceil($count[0]/$limit) : 1;
-            echo '<li><a href="?id_page='.$id_page.'&sc='.$sc[$i]['screen'].'">'.$sc[$i]['screen'].'</a> ('.$total_pages.')</li>';
+            echo '<li><a href="?id_page='.$id_page.'&sc='.$sc[$i]['screen'].'">'.$sc[$i]['screen'].'</a> ('.$count.')</li>';
         }
         echo '</ul>';
     }
