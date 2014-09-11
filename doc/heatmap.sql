@@ -22,7 +22,7 @@ CREATE TABLE page (
   id int NOT NULL AUTO_INCREMENT,
   url tinytext NOT NULL,
   PRIMARY KEY (id)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO page (id, url) VALUES
 (1, 'http://localhost/heatmap/client.html'),
