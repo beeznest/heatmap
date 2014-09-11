@@ -68,6 +68,10 @@ function cuniq() {
 var dataXY = new Array();
 var idBrowser = cuniq();
 var idUrl = window.location.href;
+var debug = true;
+if (debug) {
+    console.log("Captured URL = " + idUrl);
+}
 
 /**
 * get data x and y
