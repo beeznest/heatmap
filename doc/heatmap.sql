@@ -27,4 +27,10 @@ CREATE TABLE page (
 INSERT INTO page (id, url) VALUES
 (1, 'http://localhost/heatmap/client.html'),
 (2, 'http://vlearning.icpna.edu.pe/in/web/login'),
-(3, 'https://github.com/');
+(3, 'http://vlearning.icpna.edu.pe/in/web/modules'),
+(4, 'http://vlearningkids.icpna.edu.pe/courses/COURSE002/index.php'),
+(5, 'http://vlearningkids.icpna.edu.pe/main/newscorm/lp_controller.php'),
+(6, 'http://vlearningkids.icpna.edu.pe/main/social/home.php'),
+(7, 'http://vlearningkids.icpna.edu.pe/main/messages/inbox.php'),
+(8, 'http://vlearningkids.icpna.edu.pe/main/social/whereiam.php'),
+(9, 'http://vlearningkids.icpna.edu.pe/main/social/myperformance.php');
