@@ -143,7 +143,7 @@ body, html, h2 { margin:0; padding:0; height:100%;}
     <h1>Available resolutions 'HeadMap'</h1>
     <?php $pages = getPages($link); ?> 
     <?php foreach($pages as  $key => $value) : ?>
-        <h3><?php echo $pages[$key]['url'] ?></h3>
+        <h3><a href="<?php echo $pages[$key]['url'] ?>"><?php echo $pages[$key]['url']; ?></a></h3>
         <?php $id_page = $pages[$key]['id']; ?>
 
         <ul>
