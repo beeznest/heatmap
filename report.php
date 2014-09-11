@@ -90,7 +90,12 @@ if (!empty($_GET['sc'])) {
     // paginador
     $offset = 0;
     $limit = 250;
-    $count = mysqli_fetch_row(mysqli_query($link, "SELECT  count(*) FROM heatmap WHERE (screen = '$screen' $alternative ) AND page_id = '$id_page' "));
+    $count = mysqli_fetch_row(
+        mysqli_query(
+            $link,
+            "SELECT  count(*) FROM heatmap WHERE (screen = '$screen' $alternative ) AND page_id = '$id_page' "
+        )
+    );
     $total_pages = ($count[0] > 0) ? ceil($count[0]/$limit) : 1;
 
     for ($page = 1; $page <= $total_pages; $page++) {
@@ -139,11 +144,11 @@ body, html, h2 { margin:0; padding:0; height:100%;}
   <script src="js/heatmap.min.js"></script>  
   <script>    
     window.onload = function() {
-        // data
-        <?php $string = '';
-        foreach ($point as $key => $arreglo) {
-            foreach($arreglo as $indice => $value) {
-                $string .= "{x:".$arreglo['x'].", y:".$arreglo['y'].", value:50},"; continue;             
+    // data
+    <?php $string = '';
+        foreach ($point as $key => $array) {
+            foreach($array as $indice => $value) {
+                $string .= "{x:".$array['x'].", y:".$array['y'].", value:50},"; continue;
             }
         }        
         if ($string != '') {
@@ -166,23 +171,40 @@ body, html, h2 { margin:0; padding:0; height:100%;}
 </body>
 </html>
 <!-- html -->
-<?php } else { ?>
-    <h1>Available resolutions 'HeadMap'</h1>
-    <?php $pages = getPages($link); ?> 
-    <?php foreach($pages as  $key => $value) : ?>
-        <h3><a href="<?php echo $pages[$key]['url'] ?>"><?php echo $pages[$key]['url']; ?></a></h3>
-        <?php $id_page = $pages[$key]['id']; ?>
-
-        <ul>
-        <?php for ($i = 0; $i < count($sc); $i++) : ?> 
-            <li><a href="?id_page=<?php echo $id_page ?>&sc=<?php echo $sc[$i]['screen'] ?>"><?php echo $sc[$i]['screen'] ?></a></li>
-        <?php endfor;?>
-        </ul>
-    <?php endforeach;
-} 
+<?php
+} else {
+    echo "<h1>Available resolutions 'HeadMap'</h1>";
+    $pages = getPages($link);
+    foreach ($pages as  $key => $value) {
+        echo '<h3><a href="'.$pages[$key]['url'].'">'.$pages[$key]['url'].'</a></h3>';
+        $id_page = $pages[$key]['id'];
+        echo '<ul>';
+        for ($i = 0; $i < count($sc); $i++) {
+            $alternative = '';
+            if (in_array($sc[$i]['screen'], $screenEquiv)) {
+                foreach ($screenEquiv as $equiv => $orig) {
+                    if ($sc[$i]['screen'] == $orig) {
+                        $alternative .= " OR screen = '$equiv'";
+                    }
+                }
+            }
+            $count = mysqli_fetch_row(
+                mysqli_query(
+                    $link,
+                    "SELECT count(*) FROM heatmap WHERE (screen = '".$sc[$i]['screen']."' $alternative ) AND page_id = '$id_page' "
+                )
+            );
+            $total_pages = ($count[0] > 0) ? ceil($count[0]/$limit) : 1;
+            echo '<li><a href="?id_page='.$id_page.'&sc='.$sc[$i]['screen'].'">'.$sc[$i]['screen'].'</a> ('.$total_pages.')</li>';
+        }
+        echo '</ul>';
+    }
+}
 
 /**
  * List all pages
+ * @param   string  Database handler
+ * @return  array   Pages list
  */
 function getPages($link)
 {
