@@ -1,16 +1,23 @@
 <?php
+/* For licensing terms, see /license.txt */
+/**
+ * This script generates an entry page for visual heatmap reports
+ * @package beeznest.heatmap
+ */
+/**
+ * Init
+ */
 require_once 'config.php';
-
 //conection:
 $link = mysqli_connect($servidor, $user, $pass, $database) or die("Error " . mysqli_error($link));
-
 // data base screen
 $sc[0]['screen'] = '1366x768';
 $sc[1]['screen'] = '1280x800';
 $sc[2]['screen'] = '1024x768';
 $sc[3]['screen'] = '1600x900';
+$sc[4]['screen'] = '1680x1050';
 
-// function helper
+// function helpers
 /**
 * unserializar data current array
 */
@@ -46,13 +53,14 @@ function formarDataXY($data) {
     return $newData;
 }
 
-?>
-<?php  if (!empty($_GET['sc'])) : ?>
-<?php 
+/**
+ *
+ */
+if (!empty($_GET['sc'])) {
 
     // insert
-    $screen = $_GET['sc'];
-    $id_page = $_GET['id_page'];
+    $screen = mysqli_real_escape_string($_GET['sc']);
+    $id_page = intval($_GET['id_page']);
     $dataResult = array();
 
     // paginador
@@ -131,7 +139,7 @@ body, html, h2 { margin:0; padding:0; height:100%;}
 </body>
 </html>
 <!-- html -->
-<?php else : ?>
+<?php } else { ?>
     <h1>Available resolutions 'HeadMap'</h1>
     <?php $pages = getPages($link); ?> 
     <?php foreach($pages as  $key => $value) : ?>
@@ -143,19 +151,19 @@ body, html, h2 { margin:0; padding:0; height:100%;}
             <li><a href="?id_page=<?php echo $id_page ?>&sc=<?php echo $sc[$i]['screen'] ?>"><?php echo $sc[$i]['screen'] ?></a></li>
         <?php endfor;?>
         </ul>
-    <?php endforeach; ?>
-<?php endif; ?>
-<?php
+    <?php endforeach;
+} 
+
 /**
-* List all pages
-*/
+ * List all pages
+ */
 function getPages($link)
 {
-    $query = 'SELECT  id, url FROM page ';
+    $query = 'SELECT id, url FROM page';
     $data = array();
     $result = mysqli_query($link, $query);
     if (mysqli_num_rows($result) > 0 ) {
-        while($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch_assoc()) {
             $data[] = $row;
         }
     }
