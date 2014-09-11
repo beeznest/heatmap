@@ -31,6 +31,12 @@ Elaborado en base al plugin http://www.patrick-wied.at/static/heatmapjs (script 
 
 En la tabla **page** se deben agregar agregan todas las URLS de las paginas web que usted quiere hacer seguimiento. Para este ejemplo, se han insertado en la tabla "page" 3 URLs, de los cuales el primero es: http://localhost/heatmap/client.html
 
+Actualize este registro con las lineas de abajo si quiere seguimiento ah otro sitio web (cambie la url).
+
+    UPDATE `page` SET
+    `url` = 'http://vlearning.icpna.edu.pe/in/web/login'
+    WHERE `id` = '1';
+
 Aquí por lo tanto para cada pagina tenemos una carpeta que contendrá 4 resoluciones por defecto que se visualizarán en el reporte.
 Para crear estas carpetas de manera automatica cargamos este archivo:
 
@@ -60,6 +66,7 @@ Ahora se pueden ver los reportes. Para esta versión solo se han habilitado las 
 - 1280x800
 - 1024x768
 - 1600x900
+- 1680x1050
 
 Para ver el reporte ingrese : http://localhost/heatmap/reporte.php
 
