@@ -16,6 +16,22 @@ $sc[1]['screen'] = '1280x800';
 $sc[2]['screen'] = '1024x768';
 $sc[3]['screen'] = '1600x900';
 $sc[4]['screen'] = '1680x1050';
+/*
+// Variations in screen size
+$sc[5]['screen'] = '1252x704'; //equiv 1366
+$sc[6]['screen'] = '1173x733'; //equiv 1280
+$sc[7]['screen'] = '939x704'; //equiv 1024
+$sc[8]['screen'] = '1467x825'; //equip 1600
+$sc[9]['screen'] = '1540x963'; //equiv 1680
+*/
+
+$screenEquiv = array(
+    '1252x704' => '1366x768',
+    '1173x733' => '1280x800',
+    '939x704' => '1024x768',
+    '1467x825' => '1600x900',
+    '1540x963' => '1680x1050',
+);
 
 // function helpers
 /**
@@ -62,17 +78,25 @@ if (!empty($_GET['sc'])) {
     $screen = mysqli_real_escape_string($link, $_GET['sc']);
     $id_page = intval($_GET['id_page']);
     $dataResult = array();
+    $alternative = '';
+    if (in_array($screen, $screenEquiv)) {
+        foreach ($screenEquiv as $equiv => $orig) {
+            if ($screen == $orig) {
+                $alternative .= " OR screen = '$equiv'";
+            }
+        }
+    }
 
     // paginador
     $offset = 0;
     $limit = 250;
-    $count = mysqli_fetch_row(mysqli_query($link, "SELECT  count(*) FROM heatmap WHERE screen = '$screen' AND page_id = '$id_page' "));
+    $count = mysqli_fetch_row(mysqli_query($link, "SELECT  count(*) FROM heatmap WHERE (screen = '$screen' $alternative ) AND page_id = '$id_page' "));
     $total_pages = ($count[0] > 0) ? ceil($count[0]/$limit) : 1;
 
     for ($page = 1; $page <= $total_pages; $page++) {
         $offset = ($limit * $page) - $limit;
         $queryLimit = "LIMIT $offset,$limit ";
-        $query = "SELECT  data_serial FROM heatmap WHERE screen = '$screen' AND page_id = '$id_page' " . $queryLimit;
+        $query = "SELECT  data_serial FROM heatmap WHERE (screen = '$screen' $alternative) AND page_id = '$id_page' " . $queryLimit;
         $result = mysqli_query($link, $query,MYSQLI_USE_RESULT);    
         if ($result) {        
             while($row = $result->fetch_assoc()) {  
@@ -85,6 +109,10 @@ if (!empty($_GET['sc'])) {
 
     $array = formatData($dataResult);    
     $point = formarDataXY($array);
+    $xScreen = $screen;
+    if (isset($screenEquiv[$xScreen])) {
+        $xScreen = $screenEquiv[$xScreen];
+    }
 ?>
 <!-- html -->
 <html lang="en">
@@ -111,7 +139,7 @@ body, html, h2 { margin:0; padding:0; height:100%;}
   <script src="js/heatmap.min.js"></script>  
   <script>    
     window.onload = function() {
-        document.body.style.backgroundImage="url('image/resolution/<?php echo $id_page ?>/<?php echo $screen ?>.png')";
+        document.body.style.backgroundImage="url('image/resolution/<?php echo $id_page ?>/<?php echo $xScreen ?>.png')";
         // data
         <?php $string = '';
         foreach ($point as $key => $arreglo) {
@@ -119,7 +147,7 @@ body, html, h2 { margin:0; padding:0; height:100%;}
                 $string .= "{x:".$arreglo['x'].", y:".$arreglo['y'].", value:50},"; continue;             
             }
         }        
-        if($string != '') {
+        if ($string != '') {
             $string = substr($string, 0, -1);
         }
         ?>
