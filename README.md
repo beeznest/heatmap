@@ -68,5 +68,5 @@ Ahora se pueden ver los reportes. Para esta versión solo se han habilitado las 
 - 1600x900
 - 1680x1050
 
-Para ver el reporte ingrese : http://localhost/heatmap/reporte.php
+Para ver el reporte ingrese : http://localhost/heatmap/report.php
 
