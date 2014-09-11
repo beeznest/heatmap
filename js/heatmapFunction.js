@@ -103,7 +103,7 @@ function sendDataToServer() {
      }, 2000);
 
      $.ajax({
-         url: 'controller.php',
+         url: '/heatmap/controller.php',
          data : {data : dataXY, idUrl : idUrl},
          type: 'POST',
          dataType: 'json',
