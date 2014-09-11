@@ -59,7 +59,7 @@ function formarDataXY($data) {
 if (!empty($_GET['sc'])) {
 
     // insert
-    $screen = mysqli_real_escape_string($_GET['sc']);
+    $screen = mysqli_real_escape_string($link, $_GET['sc']);
     $id_page = intval($_GET['id_page']);
     $dataResult = array();
 
