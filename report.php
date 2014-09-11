@@ -188,6 +188,7 @@ body, html, h2 { margin:0; padding:0; height:100%;}
                     }
                 }
             }
+            // @todo fix count
             $count = mysqli_fetch_row(
                 mysqli_query(
                     $link,
@@ -207,7 +208,7 @@ body, html, h2 { margin:0; padding:0; height:100%;}
  */
 function getPages($link)
 {
-    $query = 'SELECT id, url FROM page';
+    $query = 'SELECT id, url FROM page WHERE enabled = 1';
     $data = array();
     $result = mysqli_query($link, $query);
     if (mysqli_num_rows($result) > 0 ) {

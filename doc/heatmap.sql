@@ -21,6 +21,7 @@ DROP TABLE IF EXISTS page;
 CREATE TABLE page (
   id int NOT NULL AUTO_INCREMENT,
   url tinytext NOT NULL,
+  enabled int DEFAULT 1,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
