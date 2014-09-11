@@ -68,7 +68,7 @@ function cuniq() {
 var dataXY = new Array();
 var idBrowser = cuniq();
 var idUrl = window.location.href.split('\?')[0];
-var debug = true;
+var debug = false;
 if (debug) {
     console.log("Captured URL = " + idUrl);
 }
@@ -100,7 +100,7 @@ function sendDataToServer() {
      setTimeout(function() {
          sendDataToServer();
          dataXY = new Array();
-     }, 2000);
+     }, 5000);
 
      $.ajax({
          url: '/heatmap/controller.php',
