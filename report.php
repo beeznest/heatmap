@@ -123,7 +123,7 @@ if (!empty($_GET['sc'])) {
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Heatmap in browser</title>
+  <title>Heatmap for page <?php echo $id_page; ?> - Resolution <?php echo $xScreen; ?></title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="index, follow" />
   <meta name="description" content="Heatmap in browser" />
