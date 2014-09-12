@@ -173,7 +173,7 @@ body, html, h2 { margin:0; padding:0; height:100%;}
 <!-- html -->
 <?php
 } else {
-    echo "<h1>Available resolutions 'HeadMap'</h1>";
+    echo "<h1>Available resolutions for heatmap</h1>";
     $pages = getPages($link);
     foreach ($pages as  $key => $value) {
         echo '<h3><a href="'.$pages[$key]['url'].'">'.$pages[$key]['url'].'</a></h3>';
